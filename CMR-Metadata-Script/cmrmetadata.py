@@ -27,11 +27,12 @@ date_range = start_date + ',' + end_date
 
 bounding_box = BaseConfig.BOUNDING_BOX
 
+page_num_limit = BaseConfig.PAGE_NUM_LIMIT
+
 with open(outfile, "w", newline= "") as f:
     writer = csv.writer(f,delimiter=",")
     writer.writerow(["Id", "Name", "ContentLength", "IngestionDate", "ContentDate:Start", "ContentDate:End", "Checksum:Algorithm", "Checksum:Value", "IsSealed", "SourceStorageId", "DestStorageId"])
-
-    while (page_num <= 2):
+    while (page_num <= page_num_limit):
         formated_url = query_url.format(concept_id, page_num, page_size, date_range, bounding_box)
         print(formated_url)
         resp = requests.get(query_url.format(concept_id,page_num,page_size, date_range, bounding_box)).json()
@@ -53,4 +54,3 @@ with open(outfile, "w", newline= "") as f:
                     writer.writerow([Id, Name, ContentLength, IngestionDate, ContentDateStart, ContentDateEnd, ChecksumAlgorithm,
                                     ChecksumValue, IsSealed, SourceStorageId, DestStorageId])
         page_num = page_num + 1
-    
