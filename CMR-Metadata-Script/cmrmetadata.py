@@ -29,12 +29,15 @@ bounding_box = BaseConfig.BOUNDING_BOX
 
 page_num_limit = BaseConfig.PAGE_NUM_LIMIT
 
+def convertToDateTimeFormat(dateTimeStr):
+    return datetime.fromisoformat(dateTimeStr).astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+
 def writeToCsvFile(s3_bucket_name, granule):
     Id = uuid.uuid1()
     Name = link["href"].split(s3_bucket_name)[1]
-    IngestionDate = datetime.fromisoformat(granule["time_start"][:-1]).astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-    ContentDateStart = datetime.fromisoformat(granule["time_start"][:-1]).astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-    ContentDateEnd = datetime.fromisoformat(granule["time_end"][:-1]).astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+    IngestionDate = convertToDateTimeFormat(granule["time_start"][:-1])
+    ContentDateStart = convertToDateTimeFormat(granule["time_start"][:-1])
+    ContentDateEnd = convertToDateTimeFormat(granule["time_end"][:-1])
     ContentLength = 100
     ChecksumAlgorithm = 'SHA-256'
     ChecksumValue = '2c044996bfd029c30c22f62b51e19556'
